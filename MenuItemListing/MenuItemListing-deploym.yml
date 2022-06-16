@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: MenuItemListing-deployment
+  labels:
+    app: menuitemlisting
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  menuitemlisting
+      
+  template:
+    metadata:
+      labels:
+        app:  menuitemlisting
+    spec:
+      containers:
+      - name:  menuitemlisting
+        image: menuitemlisting:latest
+        ports:
+        - containerPort: 7070
+      imagePullSecrets:
+      - name: mycredentials
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: menuitemlistingsvc
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 70
+  selector:
+    app: menuitemlisting:latest
